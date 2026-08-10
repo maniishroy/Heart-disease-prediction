@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}HeartCheck DL - Results{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="results-container">
+    {% if error %}
+    <div class="alert alert-error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span>{{ error }}</span>
+    </div>
+    <a href="{{ url_for('predict') }}" class="btn btn-primary">Return to Assessment</a>
+    {% else %}
+    
+    <div class="results-header">
+        <h1>Risk Assessment Results</h1>
+        <p>Analysis completed using {{ result.model }}</p>
+    </div>
+
+    <!-- Risk Score Card -->
+    <div class="risk-card {% if result.risk_probability > 0.7 %}risk-high{% elif result.risk_probability > 0.4 %}risk-medium{% else %}risk-low{% endif %}">
+        <div class="risk-score">
+            <div class="risk-percentage">{{ (result.risk_probability * 100) | round(1) }}%</div>
+            <div class="risk-label">
+                {% if result.risk_probability > 0.7 %}
+                High Risk
+                {% elif result.risk_probability > 0.4 %}
+                Moderate Risk
+                {% else %}
+                Low Risk
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="risk-meter">
+            <div class="risk-bar">
+                <div class="risk-fill" style="width: {{ result.risk_probability * 100 }}%"></div>
+            </div>
+            <div class="risk-markers">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <div class="risk-interpretation">
+            {% if result.risk_probability > 0.7 %}
+            <strong>⚠️ Elevated Risk Detected</strong>
+            <p>Your assessment indicates a higher probability of heart disease. We strongly recommend consulting a cardiologist for comprehensive evaluation and diagnostic testing.</p>
+            {% elif result.risk_probability > 0.4 %}
+            <strong>⚠️ Moderate Risk</strong>
+            <p>Your results suggest some risk factors present. Schedule a checkup with your healthcare provider to discuss preventive measures and lifestyle modifications.</p>
+            {% else %}
+            <strong>✓ Lower Risk Profile</strong>
+            <p>Your assessment shows a lower probability. Continue maintaining healthy habits and schedule regular checkups as recommended by your doctor.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Input Summary -->
+    <div class="summary-card">
+        <h2>Your Input Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-item">
+                <span class="summary-label">Age</span>
+                <span class="summary-value">{{ data.age }} years</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Sex</span>
+                <span class="summary-value">{{ data.sex | capitalize }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Resting BP</span>
+                <span class="summary-value">{{ data.resting_bp }} mm Hg</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Cholesterol</span>
+                <span class="summary-value">{{ data.cholesterol }} mg/dl</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Max Heart Rate</span>
+                <span class="summary-value">{{ data.max_hr }} bpm</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Oldpeak (ST Depression)</span>
+                <span class="summary-value">{{ data.oldpeak }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Resting ECG</span>
+                <span class="summary-value">{{ data.rest_ecg | replace('_', ' ') | capitalize }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">ST Slope</span>
+                <span class="summary-value">{{ data.st_slope | capitalize }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="recommendations-card">
+        <h2>Recommendations</h2>
+        <ul class="recommendations-list">
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Consult a Healthcare Professional:</strong> Share these results with your doctor for proper medical evaluation</span>
+            </li>
+            
+            {% if data.cholesterol|int > 240 %}
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Cholesterol Management:</strong> Your cholesterol level is elevated. Discuss dietary changes and possible medication with your doctor</span>
+            </li>
+            {% endif %}
+            
+            {% if data.resting_bp|int > 140 %}
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Blood Pressure Control:</strong> Monitor your blood pressure regularly and follow medical advice for management</span>
+            </li>
+            {% endif %}
+            
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Lifestyle Modifications:</strong> Regular exercise (150min/week), balanced diet, stress management, and adequate sleep</span>
+            </li>
+            
+            {% if data.smoking == '1' %}
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <span><strong>Smoking Cessation:</strong> Seek support to quit smoking - the most important step for heart health</span>
+            </li>
+            {% endif %}
+            
+            <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span><strong>Regular Monitoring:</strong> Schedule routine checkups and cardiac screenings as advised by your healthcare provider</span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Actions -->
+    <div class="results-actions">
+        <button class="btn btn-primary" onclick="window.print()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+            </svg>
+            Print Results
+        </button>
+        <a href="{{ url_for('predict') }}" class="btn btn-secondary">New Assessment</a>
+        <a href="{{ url_for('home') }}" class="btn btn-secondary">Return Home</a>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="results-disclaimer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <p>
+            <strong>Important:</strong> This AI prediction is for educational and informational purposes only. 
+            It is NOT a substitute for professional medical diagnosis. Always consult qualified healthcare professionals 
+            for medical advice, diagnosis, and treatment decisions.
+        </p>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}

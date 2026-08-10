@@ -1,0 +1,462 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - HeartCheck DL{% endblock %}
+
+{% block content %}
+<style>
+    .admin-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .admin-header {
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+    
+    .admin-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #ef4444, #f97316);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(239, 68, 68, 0.2);
+    }
+    
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #ef4444;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: #94a3b8;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .admin-section {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .section-title svg {
+        width: 24px;
+        height: 24px;
+        color: #ef4444;
+    }
+    
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+    
+    .data-table thead {
+        background: rgba(239, 68, 68, 0.1);
+    }
+    
+    .data-table th {
+        padding: 1rem;
+        text-align: left;
+        font-weight: 600;
+        color: #e2e8f0;
+        border-bottom: 2px solid rgba(239, 68, 68, 0.3);
+    }
+    
+    .data-table td {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: #94a3b8;
+    }
+    
+    .data-table tbody tr {
+        transition: all 0.2s ease;
+    }
+    
+    .data-table tbody tr:hover {
+        background: rgba(239, 68, 68, 0.05);
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .badge-danger {
+        background: rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+    }
+    
+    .badge-success {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+    }
+    
+    .badge-warning {
+        background: rgba(249, 115, 22, 0.2);
+        color: #f97316;
+    }
+    
+    .badge-admin {
+        background: rgba(147, 51, 234, 0.2);
+        color: #9333ea;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #64748b;
+    }
+    
+    .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    
+    .tabs {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tab-btn {
+        padding: 0.75rem 1.5rem;
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    
+    .tab-btn.active {
+        background: linear-gradient(135deg, #ef4444, #f97316);
+        border-color: transparent;
+        color: white;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p>System Overview & User Management</p>
+    </div>
+    
+    <!-- Statistics -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_users }}</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_predictions }}</div>
+            <div class="stat-label">Total Predictions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ "%.1f"|format(stats.avg_risk * 100) }}%</div>
+            <div class="stat-label">Average Risk</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ models|length }}</div>
+            <div class="stat-label">Models</div>
+        </div>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('users')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+            </svg>
+            Users
+        </button>
+        <button class="tab-btn" onclick="switchTab('predictions')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+                <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            Predictions
+        </button>
+        <button class="tab-btn" onclick="switchTab('models')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display: inline; vertical-align: middle; margin-right: 0.5rem;">
+                <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/>
+                <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/>
+                <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/>
+            </svg>
+            Models
+        </button>
+    </div>
+    
+    <!-- Users Tab -->
+    <div id="users-tab" class="tab-content active">
+        <div class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                    </svg>
+                    Registered Users
+                </h2>
+            </div>
+            
+            {% if users %}
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Age</th>
+                            <th>Predictions</th>
+                            <th>Joined</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td><strong>#{{ user.id }}</strong></td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.full_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.age or '-' }}</td>
+                            <td><span class="badge badge-warning">{{ user.prediction_count }}</span></td>
+                            <td>{{ user.created_at[:10] }}</td>
+                            <td>
+                                {% if user.is_admin %}
+                                <span class="badge badge-admin">Admin</span>
+                                {% else %}
+                                <span class="badge badge-success">User</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+                <h3>No Users Yet</h3>
+                <p>Users will appear here when they register</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Predictions Tab -->
+    <div id="predictions-tab" class="tab-content">
+        <div class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    Recent Predictions
+                </h2>
+            </div>
+            
+            {% if logs %}
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Timestamp</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>BP</th>
+                            <th>Cholesterol</th>
+                            <th>Risk</th>
+                            <th>Prediction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td><strong>#{{ log.id }}</strong></td>
+                            <td>{{ log.username or 'Anonymous' }}</td>
+                            <td>{{ log.timestamp[:19] }}</td>
+                            <td>{{ log.age }}</td>
+                            <td>{{ log.sex }}</td>
+                            <td>{{ log.resting_bp }}</td>
+                            <td>{{ log.cholesterol }}</td>
+                            <td>
+                                <strong style="color: {% if log.risk_probability > 0.7 %}#ef4444{% elif log.risk_probability > 0.4 %}#f97316{% else %}#10b981{% endif %}">
+                                    {{ "%.2f"|format(log.risk_probability * 100) }}%
+                                </strong>
+                            </td>
+                            <td>
+                                {% if log.prediction == 1 %}
+                                <span class="badge badge-danger">High Risk</span>
+                                {% else %}
+                                <span class="badge badge-success">Low Risk</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/>
+                </svg>
+                <h3>No Predictions Yet</h3>
+                <p>Prediction logs will appear here</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Models Tab -->
+    <div id="models-tab" class="tab-content">
+        <div class="admin-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/>
+                        <path d="M3 7v3c0 1.657 3.134 3 7 3s7-1.343 7-3V7c0 1.657-3.134 3-7 3S3 8.657 3 7z"/>
+                        <path d="M17 5c0 1.657-3.134 3-7 3S3 6.657 3 5s3.134-3 7-3 7 1.343 7 3z"/>
+                    </svg>
+                    Model Registry
+                </h2>
+            </div>
+            
+            {% if models %}
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Model Name</th>
+                            <th>File</th>
+                            <th>Timestamp</th>
+                            <th>Test Accuracy</th>
+                            <th>Test AUC</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for model in models %}
+                        <tr>
+                            <td><strong>{{ model.model_name }}</strong></td>
+                            <td><code style="color: #f97316;">{{ model.file }}</code></td>
+                            <td>{{ model.timestamp }}</td>
+                            <td><span class="badge badge-success">{{ "%.4f"|format(model.metrics.test_accuracy) if model.metrics else 'N/A' }}</span></td>
+                            <td><span class="badge badge-warning">{{ "%.4f"|format(model.metrics.test_auc) if model.metrics else 'N/A' }}</span></td>
+                            <td>{{ model.notes }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M3 12v3c0 1.657 3.134 3 7 3s7-1.343 7-3v-3c0 1.657-3.134 3-7 3s-7-1.343-7-3z"/>
+                </svg>
+                <h3>No Models Found</h3>
+                <p>Train a model to see it listed here</p>
+                <code style="color: #f97316; font-size: 0.9rem;">python training/train_dl.py</code>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabName) {
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        
+        // Remove active class from all buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Show selected tab
+        document.getElementById(tabName + '-tab').classList.add('active');
+        
+        // Add active class to clicked button
+        event.target.closest('.tab-btn').classList.add('active');
+    }
+</script>
+{% endblock %}

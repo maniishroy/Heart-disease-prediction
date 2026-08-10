@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="HeartCheck DL - Deep Learning Heart Disease Risk Prediction">
+    <meta property="og:title" content="HeartCheck DL">
+    <meta property="og:description" content="AI-powered heart disease risk assessment">
+    <title>{% block title %}HeartCheck DL{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Styles with cache busting -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}?v={{ cache_version }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                HeartCheck <span class="logo-dl">DL</span>
+            </a>
+            <div class="nav-menu">
+                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('predict') }}" class="nav-link">Predict</a>
+                <a href="{{ url_for('dataset') }}" class="nav-link">Dataset</a>
+                <a href="{{ url_for('about') }}" class="nav-link">About</a>
+                {% if session.user_id %}
+                <a href="{{ url_for('history') }}" class="nav-link">My History</a>
+                {% endif %}
+                {% if session.is_admin %}
+                <a href="{{ url_for('admin') }}" class="nav-link">Admin</a>
+                {% endif %}
+                {% if session.user_id %}
+                <span class="nav-user">{{ session.username }}</span>
+                <a href="{{ url_for('logout') }}" class="nav-link nav-logout">Logout</a>
+                {% else %}
+                <a href="{{ url_for('admin') }}" class="nav-link nav-login">Admin Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-disclaimer">
+                <strong>⚠️ Medical Disclaimer:</strong> This tool is for educational purposes only and is NOT a medical device. 
+                Always consult qualified healthcare professionals for medical advice.
+            </div>
+            <div class="footer-links">
+                <p>&copy; 2025 HeartCheck DL | 
+                   <a href="{{ url_for('about') }}">Privacy Notice</a> | 
+                   <a href="https://github.com/yourusername/heartcheck-dl" target="_blank">GitHub</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    {% include 'chatbot_partial.html' %}
+
+    <!-- Scripts with cache busting -->
+    <script src="{{ url_for('static', filename='js/app.js') }}?v={{ cache_version }}"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

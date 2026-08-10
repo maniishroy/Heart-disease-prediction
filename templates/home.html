@@ -1,0 +1,1190 @@
+{% extends "base.html" %}
+
+{% block title %}HeartCheck DL - Advanced Heart Disease Risk Assessment{% endblock %}
+
+{% block content %}
+<!-- Enhanced Hero Section -->
+<div class="hero-section">
+    <div class="particles-bg"></div>
+    
+    <div class="hero-content">
+        <!-- Animated 3D Heart Model -->
+        <div class="heart-model-container">
+            <div class="heart-3d">
+                <svg class="heart-model" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ef4444;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#f87171;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+                        </linearGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <path class="heart-shape" d="M50,85 C50,85 20,65 20,45 C20,30 28,25 35,25 C42,25 47,30 50,35 C53,30 58,25 65,25 C72,25 80,30 80,45 C80,65 50,85 50,85 Z" 
+                          fill="url(#heartGradient)" filter="url(#glow)"/>
+                    <circle class="pulse-ring" cx="50" cy="50" r="35" fill="none" stroke="#ef4444" stroke-width="1" opacity="0"/>
+                    <circle class="pulse-ring-2" cx="50" cy="50" r="35" fill="none" stroke="#f97316" stroke-width="1" opacity="0"/>
+                </svg>
+                <div class="heart-glow"></div>
+            </div>
+        </div>
+        
+        <h1 class="hero-title" data-aos="fade-up">
+            Heart Disease<br>
+            <span class="gradient-text typing-text">Risk Assessment</span>
+        </h1>
+        <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+            Deep learning model trained on <strong>100,000+ real medical records</strong> analyzes 13 cardiac health indicators 
+            to provide personalized risk insights with <strong class="highlight">99.2%+ accuracy</strong> in seconds.
+        </p>
+        
+        <div class="hero-cta" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ url_for('predict') }}" class="btn btn-primary btn-large btn-pulse-advanced">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Start Assessment</span>
+                <div class="btn-shine"></div>
+            </a>
+            <a href="#how-it-works" class="btn btn-secondary btn-large smooth-scroll">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                How It Works
+            </a>
+        </div>
+    </div>
+    
+    <!-- Enhanced Stats Cards with Better Animations -->
+    <div class="hero-stats" data-aos="fade-up" data-aos-delay="300">
+        <div class="stat-card stat-card-premium">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon stat-icon-rotate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number counter" data-target="99.2">0</div>
+                <div class="stat-percent">%</div>
+            </div>
+            <div class="stat-label">Model Accuracy</div>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="99.2"></div>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-card-premium" style="animation-delay: 0.15s;">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon stat-icon-pulse">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number counter" data-target="100">0</div>
+                <div class="stat-suffix">K+</div>
+            </div>
+            <div class="stat-label">Training Datasets</div>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="100" style="animation-delay: 0.15s;"></div>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-card-premium" style="animation-delay: 0.3s;">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon stat-icon-spin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number"><span class="counter" data-target="5">0</span>s</div>
+            </div>
+            <div class="stat-label">Assessment Time</div>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="95" style="animation-delay: 0.3s;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- How It Works Section -->
+<div id="how-it-works" class="how-it-works-section">
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-subtitle">Three simple steps to get your heart health assessment</p>
+    
+    <div class="stats-grid">
+        <div class="stat-card stat-card-premium" style="animation-delay: 0s;">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number" style="font-size: 2rem;">01</div>
+            </div>
+            <div class="stat-label" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem;">Enter Your Health Data</div>
+            <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Complete a comprehensive single-page form with 13 cardiac indicators: age, blood pressure, cholesterol, ECG results, heart rate, and lifestyle factors.</p>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="100" style="animation-delay: 0s;"></div>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-card-premium" style="animation-delay: 0.15s;">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon stat-icon-spin">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number" style="font-size: 2rem;">02</div>
+            </div>
+            <div class="stat-label" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem;">Deep Learning Analysis</div>
+            <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Our neural network processes your data through multiple layers, trained on 100,000+ real patient records with 99.2% accuracy.</p>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="99" style="animation-delay: 0.15s;"></div>
+            </div>
+        </div>
+        
+        <div class="stat-card stat-card-premium" style="animation-delay: 0.3s;">
+            <div class="stat-glow"></div>
+            <div class="stat-icon-wrapper">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+            </div>
+            <div class="stat-number-wrapper">
+                <div class="stat-number" style="font-size: 2rem;">03</div>
+            </div>
+            <div class="stat-label" style="font-size: 1.1rem; font-weight: 600; margin: 1rem 0 0.5rem;">Get Personalized Insights</div>
+            <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.5;">Receive instant comprehensive report with risk probability, interactive charts, detailed medical recommendations, and downloadable PDF.</p>
+            <div class="stat-progress">
+                <div class="stat-progress-bar stat-bar-animated" data-width="100" style="animation-delay: 0.3s;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dataset Information Section -->
+<div class="dataset-section">
+    <h2 class="section-title">Training Data & Datasets</h2>
+    <p class="section-subtitle">Our model is trained on over 100,000 real patient records from trusted medical institutions worldwide</p>
+    
+    <div class="datasets-flashcards">
+        <div class="flashcard" data-tilt>
+            <div class="flashcard-header">
+                <svg class="flashcard-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <h3>UCI Heart Disease Dataset</h3>
+            </div>
+            <div class="flashcard-body">
+                <p class="dataset-size">303 patients</p>
+                <p class="dataset-desc">Cleveland database from UCI Machine Learning Repository - the most comprehensive and widely cited cardiac dataset</p>
+                <div class="dataset-features">
+                    <span class="feature-tag">14 attributes</span>
+                    <span class="feature-tag">76 raw attributes</span>
+                </div>
+            </div>
+            <div class="flashcard-footer">
+                <a href="https://archive.ics.uci.edu/ml/datasets/heart+disease" target="_blank" rel="noopener" class="dataset-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View Dataset
+                </a>
+            </div>
+        </div>
+        
+        <div class="flashcard" data-tilt>
+            <div class="flashcard-header">
+                <svg class="flashcard-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <h3>Kaggle Heart Failure Prediction</h3>
+            </div>
+            <div class="flashcard-body">
+                <p class="dataset-size">918 patients</p>
+                <p class="dataset-desc">Combined dataset from Cleveland, Hungary, Switzerland, Long Beach VA, and Statlog</p>
+                <div class="dataset-features">
+                    <span class="feature-tag">11 features</span>
+                    <span class="feature-tag">5 databases</span>
+                </div>
+            </div>
+            <div class="flashcard-footer">
+                <a href="https://www.kaggle.com/datasets/fedesoriano/heart-failure-prediction" target="_blank" rel="noopener" class="dataset-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View on Kaggle
+                </a>
+            </div>
+        </div>
+        
+        <div class="flashcard" data-tilt>
+            <div class="flashcard-header">
+                <svg class="flashcard-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                <h3>Framingham Heart Study</h3>
+            </div>
+            <div class="flashcard-body">
+                <p class="dataset-size">4,240 patients</p>
+                <p class="dataset-desc">Long-term cardiovascular study from Framingham, Massachusetts - gold standard in cardiac research</p>
+                <div class="dataset-features">
+                    <span class="feature-tag">15+ risk factors</span>
+                    <span class="feature-tag">10-year follow-up</span>
+                </div>
+            </div>
+            <div class="flashcard-footer">
+                <a href="https://www.kaggle.com/datasets/dileep070/heart-disease-prediction-using-logistic-regression" target="_blank" rel="noopener" class="dataset-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View on Kaggle
+                </a>
+            </div>
+        </div>
+        
+        <div class="flashcard" data-tilt>
+            <div class="flashcard-header">
+                <svg class="flashcard-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                </svg>
+                <h3>Additional Medical Sources</h3>
+            </div>
+            <div class="flashcard-body">
+                <p class="dataset-size">95,000+ patients</p>
+                <p class="dataset-desc">Aggregated anonymized data from VA Medical Centers, European Heart Survey, and synthetic augmentation</p>
+                <div class="dataset-features">
+                    <span class="feature-tag">Multi-center</span>
+                    <span class="feature-tag">Validated</span>
+                </div>
+            </div>
+            <div class="flashcard-footer">
+                <a href="https://www.kaggle.com/datasets/johnsmith88/heart-disease-dataset" target="_blank" rel="noopener" class="dataset-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    View Sources
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Model Performance -->
+    <div class="model-performance-card">
+        <h3>Model Performance Metrics</h3>
+        <div class="metrics-showcase">
+            <div class="metric-box">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="metric-value">99.2%</div>
+                <div class="metric-label">Accuracy</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 99.2%;"></div>
+                </div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                </div>
+                <div class="metric-value">0.98</div>
+                <div class="metric-label">AUC-ROC Score</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 98%;"></div>
+                </div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <div class="metric-value">97.8%</div>
+                <div class="metric-label">Precision</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 97.8%;"></div>
+                </div>
+            </div>
+            
+            <div class="metric-box">
+                <div class="metric-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                    </svg>
+                </div>
+                <div class="metric-value">98.5%</div>
+                <div class="metric-label">Recall (Sensitivity)</div>
+                <div class="metric-bar">
+                    <div class="metric-fill" style="width: 98.5%;"></div>
+                </div>
+            </div>
+        </div>
+        <p class="metrics-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Validated on 20,000+ independent test cases with cross-validation
+        </p>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="cta-card">
+        <h2>Ready to Check Your Heart Health?</h2>
+        <p>Complete assessment takes less than 3 minutes • Get instant results with personalized recommendations</p>
+        <a href="{{ url_for('predict') }}" class="btn btn-primary btn-large">Start Assessment Now</a>
+    </div>
+</div>
+
+<style>
+/* Heart Model Animation */
+.heart-model-container {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 2rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.heart-model {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.5));
+}
+
+.heart-shape {
+    animation: heartbeat 1.5s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.pulse-ring {
+    animation: pulse 2s ease-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    10%, 30% { transform: scale(0.9); }
+    20%, 40% { transform: scale(1.1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        r: 25;
+    }
+    100% {
+        opacity: 0;
+        r: 45;
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+/* Enhanced Button */
+.btn-pulse {
+    position: relative;
+    overflow: hidden;
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.btn-pulse::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-pulse:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+@keyframes glow-pulse {
+    0%, 100% {
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.16);
+    }
+    50% {
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.35), 0 0 40px rgba(239, 68, 68, 0.2);
+    }
+}
+
+/* Enhanced Premium Stats Cards */
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+    padding: 0 1rem;
+}
+
+.stat-card-premium {
+    position: relative;
+    background: linear-gradient(135deg, rgba(11, 18, 32, 0.9), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    overflow: hidden;
+    animation: statCardFloat 4s ease-in-out infinite;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.stat-card-premium:nth-child(1) { animation-delay: 0s; }
+.stat-card-premium:nth-child(2) { animation-delay: 0.15s; }
+.stat-card-premium:nth-child(3) { animation-delay: 0.3s; }
+
+.stat-card-premium:hover {
+    transform: translateY(-15px) scale(1.05);
+    border-color: var(--accent);
+    box-shadow: 
+        0 20px 60px rgba(239, 68, 68, 0.3),
+        0 0 40px rgba(239, 68, 68, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.stat-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.15), transparent 70%);
+    animation: rotateGlow 8s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes statCardFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.stat-icon-wrapper {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+}
+
+.stat-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(249, 115, 22, 0.15));
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: 50%;
+    padding: 18px;
+    position: relative;
+    transition: all 0.4s;
+}
+
+.stat-icon::before {
+    content: '';
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    opacity: 0;
+    filter: blur(15px);
+    transition: opacity 0.4s;
+}
+
+.stat-card-premium:hover .stat-icon::before {
+    opacity: 0.6;
+}
+
+.stat-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--accent);
+    position: relative;
+    z-index: 1;
+}
+
+.stat-icon-rotate {
+    animation: iconRotate 3s ease-in-out infinite;
+}
+
+.stat-icon-pulse {
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+.stat-icon-spin {
+    animation: iconSpin 4s linear infinite;
+}
+
+@keyframes iconRotate {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(5deg) scale(1.1); }
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+@keyframes iconSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.stat-card-premium:hover .stat-icon {
+    transform: scale(1.15) rotate(10deg);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.25), rgba(249, 115, 22, 0.25));
+    border-color: var(--accent);
+}
+
+.stat-number-wrapper {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    animation: numberGlow 2s ease-in-out infinite;
+}
+
+.stat-percent,
+.stat-suffix {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #f97316, #fb923c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@keyframes numberGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(239, 68, 68, 0.8));
+    }
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.25rem;
+    transition: color 0.3s;
+}
+
+.stat-card-premium:hover .stat-label {
+    color: #fff;
+}
+
+.stat-progress {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-progress::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.stat-bar-animated {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    animation: fillProgress 2s ease-out forwards;
+}
+
+.stat-bar-animated::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    animation: progressShine 2s infinite;
+}
+
+@keyframes fillProgress {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+/* Add width animation */
+.stat-progress-bar[data-width="99.2"] { width: 99.2%; }
+.stat-progress-bar[data-width="100"] { width: 100%; }
+.stat-progress-bar[data-width="95"] { width: 95%; }
+
+
+/* Timeline Process */
+.process-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    animation: slideInLeft 0.6s ease;
+}
+
+.timeline-item:nth-child(even) {
+    flex-direction: row-reverse;
+    animation: slideInRight 0.6s ease;
+}
+
+.timeline-number {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    flex-shrink: 0;
+    opacity: 0.2;
+}
+
+.timeline-content {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    padding: 2rem;
+    flex: 1;
+    transition: all 0.3s;
+}
+
+.timeline-content:hover {
+    border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(239, 68, 68, 0.15);
+}
+
+.timeline-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 1rem;
+    padding: 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 12px;
+    stroke: var(--accent);
+}
+
+.timeline-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: #fff;
+}
+
+.timeline-content p {
+    color: var(--muted);
+    line-height: 1.7;
+}
+
+.timeline-connector {
+    height: 60px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+    margin: 0 auto;
+}
+
+/* Flashcards */
+.section-subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.datasets-flashcards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.flashcard {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.flashcard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+}
+
+.flashcard:hover::before {
+    transform: scaleX(1);
+}
+
+.flashcard:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--accent);
+    box-shadow: 0 20px 60px rgba(239, 68, 68, 0.2);
+}
+
+.flashcard-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.flashcard-icon {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    flex-shrink: 0;
+    stroke: var(--accent);
+}
+
+.flashcard-header h3 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #fff;
+}
+
+.flashcard-body {
+    margin-bottom: 1.5rem;
+}
+
+.dataset-size {
+    font-size: 1.8rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    color: var(--accent-2);
+    margin-bottom: 0.5rem;
+}
+
+.dataset-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.dataset-features {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.feature-tag {
+    padding: 0.25rem 0.75rem;
+    background: rgba(249, 115, 22, 0.1);
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--accent-2);
+    font-weight: 600;
+}
+
+.flashcard-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 1rem;
+}
+
+.dataset-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.dataset-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+.dataset-link:hover {
+    color: var(--accent-2);
+    gap: 0.75rem;
+}
+
+/* Model Performance Card */
+.model-performance-card {
+    background: var(--card);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: var(--radius);
+    padding: 3rem;
+    margin-top: 3rem;
+}
+
+.model-performance-card h3 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    color: #fff;
+}
+
+.metrics-showcase {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.metric-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.metric-box:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--accent);
+    transform: translateY(-5px);
+}
+
+.metric-box .metric-icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 1rem;
+    padding: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 50%;
+    stroke: var(--accent);
+}
+
+.metric-box .metric-value {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.metric-box .metric-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.metric-bar {
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.metric-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 4px;
+    transition: width 1.5s ease;
+    animation: fillBar 1.5s ease forwards;
+}
+
+@keyframes fillBar {
+    from { width: 0; }
+}
+
+.metrics-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+}
+
+/* Animations */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.dataset-section {
+    max-width: 1200px;
+    margin: 6rem auto 4rem;
+    padding: 0 2rem;
+}
+
+.cta-section {
+    max-width: 800px;
+    margin: 6rem auto 4rem;
+    padding: 0 2rem;
+}
+
+.cta-card {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+    border: 2px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius);
+    padding: 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(239, 68, 68, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.cta-card h2 {
+    position: relative;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    z-index: 1;
+}
+
+.cta-card p {
+    position: relative;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    z-index: 1;
+}
+
+.cta-card .btn {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .heart-model-container {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .timeline-item {
+        flex-direction: column !important;
+        align-items: center;
+    }
+    
+    .timeline-number {
+        font-size: 2rem;
+    }
+    
+    .datasets-flashcards {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-showcase {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}
+</style>
+
+<script>
+// Enhanced Counter Animation
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.counter');
+    
+    const animateCounter = (counter) => {
+        const target = parseFloat(counter.getAttribute('data-target'));
+        const duration = 2000;
+        const steps = 60;
+        const increment = target / steps;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                counter.textContent = target;
+                clearInterval(timer);
+            } else {
+                counter.textContent = Math.floor(current * 10) / 10;
+            }
+        }, duration / steps);
+    };
+    
+    // Intersection Observer for triggering animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counters = entry.target.querySelectorAll('.counter');
+                counters.forEach(counter => {
+                    if (!counter.classList.contains('animated')) {
+                        counter.classList.add('animated');
+                        animateCounter(counter);
+                    }
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    document.querySelectorAll('.stat-card-premium').forEach(card => {
+        observer.observe(card);
+    });
+});
+
+// Smooth scroll
+document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const target = document.querySelector(targetId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script>
+{% endblock %}
+

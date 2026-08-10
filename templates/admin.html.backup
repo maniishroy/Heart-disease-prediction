@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}HeartCheck DL - Admin{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p>Model management and prediction logs</p>
+    </div>
+
+    <!-- Model Registry -->
+    <div class="admin-card">
+        <h2>Model Registry</h2>
+        {% if models %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Model Name</th>
+                        <th>File</th>
+                        <th>Timestamp</th>
+                        <th>Test Accuracy</th>
+                        <th>Test AUC</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in models %}
+                    <tr>
+                        <td><strong>{{ model.model_name }}</strong></td>
+                        <td><code>{{ model.file }}</code></td>
+                        <td>{{ model.timestamp }}</td>
+                        <td>{{ "%.4f"|format(model.metrics.test_accuracy) if model.metrics else 'N/A' }}</td>
+                        <td>{{ "%.4f"|format(model.metrics.test_auc) if model.metrics else 'N/A' }}</td>
+                        <td>{{ model.notes }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <h3>No Models Found</h3>
+            <p>Train a model to see it listed here</p>
+            <code>python training/train_dl.py</code>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Recent Predictions -->
+    <div class="admin-card">
+        <h2>Recent Predictions (Last 50)</h2>
+        {% if logs %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Timestamp</th>
+                        <th>Age</th>
+                        <th>Sex</th>
+                        <th>BP</th>
+                        <th>Cholesterol</th>
+                        <th>Max HR</th>
+                        <th>Risk %</th>
+                        <th>Prediction</th>
+                        <th>Model</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.id }}</td>
+                        <td>{{ log.timestamp[:19] }}</td>
+                        <td>{{ log.age }}</td>
+                        <td>{{ log.sex }}</td>
+                        <td>{{ log.resting_bp }}</td>
+                        <td>{{ log.cholesterol }}</td>
+                        <td>{{ log.max_hr }}</td>
+                        <td>
+                            <span class="risk-badge {% if log.risk_probability > 0.7 %}risk-high{% elif log.risk_probability > 0.4 %}risk-medium{% else %}risk-low{% endif %}">
+                                {{ (log.risk_probability * 100) | round(1) }}%
+                            </span>
+                        </td>
+                        <td>
+                            {% if log.prediction == 1 %}
+                            <span class="badge badge-danger">Positive</span>
+                            {% else %}
+                            <span class="badge badge-success">Negative</span>
+                            {% endif %}
+                        </td>
+                        <td><code>{{ log.model_name }}</code></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            <h3>No Predictions Yet</h3>
+            <p>Prediction logs will appear here after running assessments</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Actions -->
+    <div class="admin-card">
+        <h2>Actions</h2>
+        <div class="admin-actions">
+            <button class="btn btn-secondary" onclick="alert('Retrain functionality would trigger training/train_dl.py')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Retrain Model
+            </button>
+            <button class="btn btn-secondary" onclick="window.location.reload()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                Refresh Data
+            </button>
+            <a href="{{ url_for('home') }}" class="btn btn-secondary">Return Home</a>
+        </div>
+    </div>
+
+    <!-- System Info -->
+    <div class="admin-card">
+        <h2>System Information</h2>
+        <div class="system-info">
+            <div class="info-item">
+                <span class="info-label">Flask Version:</span>
+                <span class="info-value">3.0.0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">TensorFlow Version:</span>
+                <span class="info-value">2.15.0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Python Version:</span>
+                <span class="info-value">3.11+</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Database:</span>
+                <span class="info-value">SQLite ({{ 'db/predictions.sqlite' }})</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
